@@ -76,9 +76,11 @@ class MainFrame(wx.Frame):
 						before delete on details\
 						for each row\
 						begin\
-							delete from days where year=old.year and month=old.month and day=old.day;\
-							delete from months where year=old.year and month=old.month;\
-							delete from years where year=old.year;\
+							declare c int;\
+							set c = old.food + old.clothes + old.entertainment + old.others;\
+							update days set total=total-c where year=old.year and month=old.month and day=old.day;\
+							update months set total=total-c where year=old.year and month=old.month;\
+							update years set total=total-c where year=old.year;\
 						end")								
 		cursor.execute("DROP TRIGGER IF EXISTS tri_detailsInsert")
 		cursor.execute("create trigger tri_detailsInsert\
